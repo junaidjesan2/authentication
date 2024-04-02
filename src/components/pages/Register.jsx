@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase/firebase";
-import { useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../context/context";
 
 export default function Register() {
-  const [message, setMessage] = useState("");
+
+  const {message,signInUser}=useContext(AuthContext)
 
   const formSubmit = (e) => {
     e.preventDefault();
@@ -13,19 +13,8 @@ export default function Register() {
     const password = e.target.password.value;
     const repassword = e.target.repassword.value;
 
-
     if (password === repassword) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((newUser) => {
-          const user = newUser.user;
-          {
-            user && setMessage("User Has Created");
-          }
-        })
-        .catch((er) => {
-          console.log(er)
-          setMessage(er.message);
-        });
+      signInUser(email,password)
     }
   };
   return (
